@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>House Price Prediction</title>
+    <!-- 부트스트랩 CDN 링크 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fyq8/4Gaw+NX9GIwBho6H/MXpuFfmw1QwFQUP" crossorigin="anonymous">
+    <!-- Bootstrap CDN link added -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fyq8/4Gaw+NX9GIwBho6H/MXpuFfmw1QwFQUP" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <style>
+    body {
+      min-height: 100vh;
+
+      background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
+      background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+      background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+      background: -o-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+      background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%);
+    }
+    .container {
+    max-width: 680px;
+    margin: 80px auto; /* 중앙 정렬 및 상단/하단 여백 추가 */
+    padding: 32px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    background: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+    }
+
+    button {
+    display: block;
+    margin: 0 auto;
+    }
+    .form-group {
+        padding: 5px; 
+        margin-bottom: 5px;
+    }
+
+
+  </style>
+  
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <h1 class="text-center my-5">House Price Prediction</h1>
+          <form id="prediction-form" action="/predict" method="POST">
+            <div class="form-group">
+              <label for="rm"><Strong>RM (Average number of rooms per dwelling)</Strong></label>
+              <input type="text" name="rm" class="form-control" placeholder="Enter RM value">
+            </div>
+            <div class="form-group">
+              <label for="ptratio"><Strong>PTRATIO (Pupil-teacher ratio by town)</Strong></label>
+              <input type="text" name="ptratio" class="form-control" placeholder="Enter PTRATIO value">
+            </div>
+            <div class="form-group">
+              <label for="lstat"><Strong>LSTAT (% lower status of the population)</Strong></label>
+              <input type="text" name="lstat" class="form-control" placeholder="Enter LSTAT value">
+            </div>
+            <div class="form-group">
+                <label for="crim"><Strong>CRIM (per capita crime rate by town)</Strong></label>
+                <input type="text" class="form-control" id="crim" name="crim" placeholder="Enter CRIM">
+              </div>
+              <div class="form-group">
+                <label for="zn"><Strong>ZN (proportion of residential land zoned for lots over 25,000 sq.ft.)</Strong></label>
+                <input type="text" class="form-control" id="zn" name="zn" placeholder="Enter ZN">
+              </div>
+              <div class="form-group">
+                <label for="indus"><strong>INDUS (proportion of non-retail business acres per town)</strong></label>
+                <input type="text" class="form-control" id="indus" name="indus" placeholder="Enter INDUS">
+              </div>
+              <div class="form-group">
+                <label for="chas"><strong>CHAS (Charles River dummy variable)</strong></label>
+                <select class="form-control" id="chas" name="chas">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nox"><strong>NOX (Nitric Oxides Concentration - parts per 10 million)</strong></label>
+                <input type="number" class="form-control" id="nox" name="nox" step="any" required placeholder="Enter NOX">
+            </div>
+            <div class="form-group">
+                <label for="rm"><strong>RM (Average number of rooms per dwelling)</strong></label>
+                <input type="number" class="form-control" id="rm" name="rm" step="any" required placeholder="Enter RM">
+            </div>
+            <div class="form-group">
+                <label for="age"><strong>AGE (Proportion of owner-occupied units built prior to 1940)</strong></label>
+                <input type="number" class="form-control" id="age" name="age" step="any" required placeholder="Enter AGE">
+            </div>
+            <div class="form-group">
+                <label for="dis"><strong>DIS (Weighted distances to five Boston employment centers)</strong></label>
+                <input type="number" class="form-control" id="dis" name="dis" step="any" required placeholder="Enter DIS">
+            </div>
+            <div class="form-group">
+                <label for="rad"><strong>RAD (Index of accessibility to radial highways)</strong></label>
+                <input type="number" class="form-control" id="rad" name="rad" step="any" required placeholder="Enter RAD">
+            </div>
+            <div class="form-group">
+                <label for="tax"><strong>TAX (Full-value property-tax rate per $10,000)</strong></label>
+                <input type="number" class="form-control" id="tax" name="tax" step="any" required placeholder="Enter TAX">
+            </div>
+            <div class="form-group">
+                <label for="ptratio"><strong>PTRATIO (Pupil-teacher ratio by town)</strong></label>
+                <input type="number" class="form-control" id="ptratio" name="ptratio" step="any" required placeholder="Enter PTRATIO">
+            </div>
+            <div class="form-group">
+                <label for="b"><strong>B (1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town)</strong></label>
+                <input type="number" class="form-control" id="b" name="b" step="any" required placeholder="Enter B">
+            </div>
+            <div class="form-group">
+                <label for="lstat"><strong>lower status of the population</strong></label>
+                <input type="text" class="form-control" id="lstat" name="lstat" placeholder="Enter LSTAT">
+            </div>
+              
+            <button type="submit" class="btn btn-primary">Predict</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery 및 Bootstrap JavaScript CDN 링크 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#prediction-form').submit(function(event) {
+                event.preventDefault();
+                var form_data = {
+                    'rm': $('input[name=rm]').val(),
+                    'ptratio': $('input[name=ptratio]').val(),
+                    'lstat': $('input[name=lstat]').val()
+                };
+            $.ajax({
+                type: 'POST',
+                url: "/predict",
+                data: $('#prediction-form').serialize(),
+                success: function(response) {
+                    $('#prediction').text('$' + response['prediction']);
+                    window.location.href = "/price?prediction=" + response['prediction'];   
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>

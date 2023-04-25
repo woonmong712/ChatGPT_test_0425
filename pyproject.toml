@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "hannah-chatgpt"
+version = "0.1.0"
+description = "programming with ChatGPT"
+authors = ["woonmong <kiata@naver.com>"]
+readme = "README.md"
+packages = [{include = "hannah_chatgpt"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

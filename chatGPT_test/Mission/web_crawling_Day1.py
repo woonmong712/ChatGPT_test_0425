@@ -20,6 +20,13 @@ time.sleep(1)
 element.send_keys(Keys.RETURN)
 time.sleep(1)
 
+# 검색 결과 테스트 함수
+def test_search_results(results):
+    for title, link in results:
+        if not title or not link:
+            return False
+    return True
+
 # 검색 결과 가져오기
 html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
@@ -32,6 +39,8 @@ for result in search_results:
     link = result.find('a')['href']
     results.append((title, link))
 
-for data in results:
-    print(data)
-
+# 검색 결과 테스트 수행
+if test_search_results(results):
+    print("검색이 정상적으로 이루어졌습니다.")
+else:
+    print("검색 결과에 오류가 있습니다.")

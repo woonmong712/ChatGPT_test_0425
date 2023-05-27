@@ -28,21 +28,24 @@ search_results = soup.find_all('div', {'class': ['itemName', 'itemMeta']})
 for result in search_results:
     title = result.find('strong')
     author = result.find('span', {'class': 'author'})
+    company = result.find('span',{'class':'company'})
     
     if title:
         title_element = title.text.strip()
-    elif author:
+    elif author and company:
         author_element = author.text.strip()
+        company_element = company.text.strip()
         # 중간 None 값을 걸러내기 위함
-        book_list.append([title_element,author_element])
+        book_list.append([title_element,author_element,company_element])
     else:
         print("error")
+
 driver.quit()
 
 # 추출한 도서 정보를 엑셀 파일로 저장
 workbook = Workbook()
 sheet = workbook.active
-sheet.append(["제목", "저자"])
+sheet.append(["제목", "저자","출판사"])
 
 for book in book_list:
     sheet.append(book)
